@@ -22,7 +22,7 @@
 /* Define ------------------------------------------------------------*/
 #define LED_PIN     PB5
 #define GREEN_PIN     PB0
-#define BOTTON_PIN     PD2
+#define BUTTON_PIN     PD2
 
 
 #define BLINK_DELAY 500
@@ -40,25 +40,27 @@ int main(void)
     /* Set output pin */
     DDRB |= _BV(LED_PIN);           /* DDRB = DDRB or (0010 0000) */
     DDRB |= _BV(GREEN_PIN); 
-    DDRD &= ~(1<<BOTTON_PIN);
-    PORTD |= _BV(BOTTON_PIN);
+    DDRD &= ~(1<<BUTTON_PIN);
+    PORTD |= _BV(BUTTON_PIN);
 
 
 
 
     /* Turn LED off */
     PORTB |= _BV(LED_PIN);         /* PORTB = PORTB and (0010 0000) */
-    PORTB |= _BV(GREEN_PIN);
+    PORTB &= ~_BV(GREEN_PIN);
+    
+  for(;;) 
 
-    if (bit_is_set(PIND, 0))  {
+  {
+    if (bit_is_clear(PIND, BUTTON_PIN))  {
 
-      PORTD|=  (1<<GREEN_PIN) ;
-      PORTD|=_BV(GREEN_PIN) ;
+      PORTB^=_BV(LED_PIN);
+      PORTB^=_BV(GREEN_PIN);
+      _delay_ms(BLINK_DELAY);
     }
-    else 
-        PORTD &=  (1<<GREEN_PIN);
-        PORTD &=  _BV(GREEN_PIN);
-
+    
+  }
     /* Infinite loop */
     
 
