@@ -16,63 +16,34 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "gpio.h"
+#include <stdbool.h>
 //#include <avr-libc.h>
  
 
-/* Typedef -----------------------------------------------------------*/
 /* Define ------------------------------------------------------------*/
 #define LED_PIN     PB5
-#define GREEN_PIN     PB0
-#define BUTTON_PIN     PD3
-
-
+#define GREEN_PIN   PB0
+#define BUTTON_PIN  PD2
 #define BLINK_DELAY 250
-/* Variables ---------------------------------------------------------*/
-/* Function prototypes -----------------------------------------------*/
-
-/* Functions ---------------------------------------------------------*/
-/**
-  * Brief:  Main program. Blink a LED with delay function.
-  * Input:  None
-  * Return: None
-  */
-int main(void)
-{
-    /* Set output pin */
-   
-    GPIO_config_output(&DDRB, LED_PIN);           /* DDRB = DDRB or (0010 0000) */
-    GPIO_config_output(&DDRB, GREEN_PIN); 
     
-
-
-
-
-
-    /* Turn LED off */
-    
-    GPIO_write(&PORTB, LED_PIN, 1);     /* PORTB = PORTB and (0010 0000) */
-    GPIO_write(&PORTB, GREEN_PIN, 0);  
-    
-  for(;;) 
-
-  {
-   
-
-      //GPIO_toggle(&PORTB, LED_PIN); /// TOTO JE NOVE
-    // GPIO_toggle(&PORTB, GREEN_PIN); ///
-    //  _delay_ms(BLINK_DELAY);
-    
-    if(GPIO_read(&PIND, BUTTON_PIN)==1) 
-     {
-       GPIO_write(&PORTB, LED_PIN, 1);
-     }
-       else {
-         GPIO_write(&PORTB, LED_PIN, 0);
-       }
-       
-  }
   
     
+int main(void)
+{
+bool state = true;
+ GPIO_config_output(&DDRB, LED_PIN);
+ GPIO_config_input_nopull(&DDRD, BUTTON_PIN);
 
-    return (0);
+
+for(;;)
+{
+if(GPIO_read(&PIND, BUTTON_PIN)==1 && state==true)
+  GPIO_write(&DDRB, LED_PIN, state);
+  state ^=state;
+else
+GPIO_write(&DDRB, LED_PIN, state);
+  state ^=state;
+
+}
+return (0);
 }

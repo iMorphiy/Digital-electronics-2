@@ -24,13 +24,19 @@ void GPIO_toggle(volatile uint8_t *reg_name, uint8_t pin_num)
     *reg_name^=_BV(pin_num);
 }
 uint8_t GPIO_read(volatile uint8_t *reg_name, uint8_t pin_num)
-
 {
+   
+   return(bit_is_set(*reg_name, pin_num));
 
-    if (bit_is_set(reg_name, pin_num))  
-
-     return(1);
-     else
-     return(0);
-    
 }
+
+void GPIO_config_input_nopull(volatile uint8_t *reg_name, uint8_t pin_num)
+{
+    *reg_name &= ~_BV(pin_num);
+}
+void GPIO_config_input_pullup(volatile uint8_t *reg_name, uint8_t pin_num)
+{
+     *reg_name &= ~_BV(pin_num);
+    *(reg_name+1) &= ~_BV(pin_num);
+}
+
