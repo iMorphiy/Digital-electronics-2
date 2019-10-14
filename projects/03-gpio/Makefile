@@ -85,11 +85,18 @@ size : $(TARGET).elf
 
 ## Rule for program flashing
 # https://www.nongnu.org/avrdude/user-manual/avrdude_4.html
+## Varible USBPORT  $(USBPORT) may link to another port on Ubuntu LTS 
 flash : $(TARGET).hex
 	@echo "Flashing program memory\t$<"
-	@$(AVRDUDE) -p $(MCU_DUDE) -c arduino -D -V -u -q -U flash:w:$(TARGET).hex:i -P $(USBPORT)
+	@$(AVRDUDE) -p $(MCU_DUDE) -c arduino -D -V -u -q -U flash:w:$(TARGET).hex:i -P /dev/ttyACM0
 
 ## Clean rule
+
 clean :
 	@echo "Cleaning project files \t$(RMFILES)"
 	@$(RM) $(RMFILES)
+
+print :
+
+	echo "AVRDUDE is: $(AVRDUDE)\n TARGET is: $(TARGET)\n USBPORT is: $(USBPORT)\n MCU_DUDE is: $(MCU_DUDE)\n"
+

@@ -16,7 +16,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "gpio.h"
-#include <stdbool.h>
+
 //#include <avr-libc.h>
  
 
@@ -30,20 +30,18 @@
     
 int main(void)
 {
-bool state = true;
+
+ GPIO_config_output(&DDRB, GREEN_PIN);
  GPIO_config_output(&DDRB, LED_PIN);
  GPIO_config_input_nopull(&DDRD, BUTTON_PIN);
-
-
-for(;;)
-{
-if(GPIO_read(&PIND, BUTTON_PIN)==1 && state==true)
-  GPIO_write(&DDRB, LED_PIN, state);
-  state ^=state;
+          
+ for(;;)
+{	
+if(GPIO_read(&PIND, BUTTON_PIN)==0)
+	GPIO_write(&PORTB, GREEN_PIN, 1);
 else
-GPIO_write(&DDRB, LED_PIN, state);
-  state ^=state;
-
+  	GPIO_write(&PORTB, GREEN_PIN, 0);
 }
+
 return (0);
 }

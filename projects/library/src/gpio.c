@@ -1,4 +1,5 @@
 #include "gpio.h"
+#include "stdint.h"
 
 void GPIO_config_output(volatile uint8_t *reg_name, uint8_t pin_num)
 {
