@@ -1,0 +1,11 @@
+switch (interr_mode) {
+            case TIM_OVERFLOW_ENABLE:
+                TIMSK0 = TIMSK1 | _BV(TOIE1);
+                break;
+            case TIM_OVERFLOW_DISABLE:
+                TIMSK1 = TIMSK1 & ~_BV(TOIE1);
+                break;
+            default:
+                /* Disable overflow interrupt */
+                TIMSK1 = TIMSK1 & ~_BV(TOIE1);
+        }
