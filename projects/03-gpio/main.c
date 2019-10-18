@@ -37,10 +37,9 @@ int main(void)
           
  for(;;)
 {	
-if(GPIO_read(&PIND, BUTTON_PIN)==0)
-	GPIO_write(&PORTB, GREEN_PIN, 1);
-else
-  	GPIO_write(&PORTB, GREEN_PIN, 0);
+  GPIO_toggle(&PORTB, GREEN_PIN);
+  _delay_ms(BLINK_DELAY);
+  
 }
 
 return (0);

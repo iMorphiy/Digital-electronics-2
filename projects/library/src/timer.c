@@ -41,6 +41,7 @@ void TIM_config_prescaler(uint8_t timer_name,
                           uint8_t presc_val)
 
 {
+{
     /* Timer/Counter0 */
     if (timer_name == TIM0) {
         switch (presc_val) {
@@ -83,7 +84,7 @@ void TIM_config_prescaler(uint8_t timer_name,
     }
     /* Timer/Counter1 */
     else if (timer_name == TIM1) {
-        switch (presc_val) {
+       switch (presc_val) {
             case TIM_PRESC_1:
                 /* 001 */
                 TCCR1B = TCCR1B & ~_BV(CS02);
@@ -120,9 +121,10 @@ void TIM_config_prescaler(uint8_t timer_name,
                 TCCR1B = TCCR1B & ~_BV(CS11);
                 TCCR1B = TCCR1B & ~_BV(CS10);
     }
+    }
     /* Timer/Counter2 */
     else {
-       switch (presc_val) {
+        switch (presc_val) {
             case TIM_PRESC_1:
                 /* 001 */
                 TCCR2B = TCCR2B & ~_BV(CS22);
@@ -158,6 +160,7 @@ void TIM_config_prescaler(uint8_t timer_name,
                 TCCR2B = TCCR2B & ~_BV(CS22);
                 TCCR2B = TCCR2B & ~_BV(CS21);
                 TCCR2B = TCCR2B & ~_BV(CS20);
+    }
     }
 }
 }
