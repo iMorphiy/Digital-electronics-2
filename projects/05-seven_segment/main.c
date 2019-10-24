@@ -15,6 +15,7 @@
 
 /* Includes ----------------------------------------------------------*/
 #include <avr/io.h>
+#include <util/delay.h>
 #include "gpio.h"
 #include "timer.h"
 #include "segment.h"
@@ -40,30 +41,47 @@ int main(void)
 {
     /* D1 led */
     // TODO: Configure D1 led at Multi-Function Shield
-    GPIO_config_output(&DDRC, LED_D1);
-    /* Pin Change Interrupts 11:9 */
+    GPIO_config_output(&DDRB, LED_D1);
+    //GPIO_write(&PINB, LED_D1, 1);
     // TODO: Configure Pin Change Interrupts 11, 10, and 9
 
+    PCICR |= _BV(PCIE1);
+    PCMSK1 |= _BV(PCINT9); 
+    //|_BV(PCINT10) |_BV(PCINT11);
     /* 7-segment display interface */
-    // TODO: Configure 7-segment display pins
 
+    GPIO_config_output(&DDRB, SEGMENT_DATA);
+    GPIO_config_output(&DDRD, SEGMENT_CLK);
+    GPIO_config_output(&DDRD, SEGMENT_LATCH);
+
+    GPIO_config_input_nopull(&DDRC, BTN_S1);
+    GPIO_config_input_nopull(&DDRC, BTN_S2);
+    GPIO_config_input_nopull(&DDRC, BTN_S3);
+
+    GPIO_write(&PORTB, SEGMENT_DATA, 0);
+    GPIO_write(&PORTD, SEGMENT_CLK, 0);
+    GPIO_write(&PORTD, SEGMENT_LATCH, 0);
+    // TODO: Configure 7-segment display pins
+    //TIM_config_prescaler(TIM1, TIM_PRESC_64);
+    //TIM_config_interrupt(TIM1, TIM_OVERFLOW_ENABLE);
     /* Enable interrupts by setting the global interrupt mask */
     sei();
 
     /* Infinite loop */
     for (;;) {
-        // TODO: Use function to display digit 1 at position 0
-        // SEG_putc(1, 0);
+
+     
+       for(uint8_t a=0; a<=9; a++){
+           SEG_putc(a, 0);
+           _delay_ms(200);
+       }
+
     }
 
     return (0);
 }
 
-/**
- *  Brief: Pin Change Interrupt 11:9 routine. Toggle a LED.
- */
-/*ISR(???)
+ISR(PCINT1_vect)
 {
-    // TODO: Toggle a led
+    GPIO_toggle(&PORTB, LED_D1);
 }
-*/

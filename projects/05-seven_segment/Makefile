@@ -21,6 +21,7 @@ SRCS := $(wildcard *.c)
 #SRCS += $(LIBRARY_DIR)/src/twi.c
 SRCS += $(LIBRARY_DIR)/src/gpio.c
 SRCS += $(LIBRARY_DIR)/src/timer.c
+SRCS += $(LIBRARY_DIR)/src/segment.c
 ASSRC := $(wildcard *.S)
 
 
@@ -89,7 +90,7 @@ size : $(TARGET).elf
 ## Varible USBPORT  $(USBPORT) may link to another port on Ubuntu LTS 
 flash : $(TARGET).hex
 	@echo "Flashing program memory\t$<"
-	@$(AVRDUDE) -p $(MCU_DUDE) -c arduino -D -V -u -q -U flash:w:$(TARGET).hex:i -P /dev/ttyACM0
+	@$(AVRDUDE) -p $(MCU_DUDE) -c arduino -D -V -u -q -U flash:w:$(TARGET).hex:i -P /dev/ttyUSB0
 
 ## Clean rule
 

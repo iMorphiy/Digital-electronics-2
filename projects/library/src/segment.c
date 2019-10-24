@@ -42,15 +42,15 @@ uint8_t segment_digit[] = {
     0b11000000,      // Digit 0
     0b11111001,      // Digit 1
     0b10100100,      // Digit 2
-    
-    0b10110000,
-    0b10011001,
-    0b10010010,
-    0b10000010,
-    0b11110111,
+    0b10110000,      // Digit 3
+    0b10011001,      // Digit 4
+    0b10010010,      // Digit 5
+    0b10000010,      // Digit 6
+    0b11111000,      // Digit 7
+    0b10000000,      // Digit 8
     0b10011000};     // Digit 9
 
-* Active high position 0 to 3 
+// Active high position 0 to 3 
 uint8_t segment_position[] = {
     0b00001000,   // Position 0
     0b00000100,   // Position 1
@@ -58,43 +58,34 @@ uint8_t segment_position[] = {
     0b00000001};  // Position 3
 
 /* Functions ---------------------------------------------------------*/
-void SEG_putc(uint8_t digit,
-              uint8_t position)
+void SEG_putc(uint8_t digit, uint8_t position)
 {
-    uint8_t i;
 
+    uint8_t i;
     /* Read values from look-up tables */
     digit    = segment_digit[digit];
     position = segment_position[position];
+   /*To display digit put 1st byte to serial data */
+    for (i = 0; i < 8; i++) {
+        GPIO_write(&PORTB, SEGMENT_DATA, bit_is_set(digit, 7-i));
+        SEG_toggle_clk();
+    }
+    /*To select one of four position put 2nd byte to serial data */
+    for (i = 0; i < 8; i++) {
+        GPIO_write(&PORTB, SEGMENT_DATA, bit_is_set(position, 7-i));
+        SEG_toggle_clk();
+    }
     
-    /* Put 1st byte to serial data */
-    for (i = 0; i < 8; i++) {
-        if (digit[i]==1){
-            GPIO_write(&PINB, PB0, 1);
-        }
-        else 
-             GPIO_write(&PINB, PB0, 0;
-        SEG_toggle_clk();
-    }
-    /* Put 2nd byte to serial data */
-    for (i = 0; i < 8; i++) {
-        if (position[i]==1){
-            GPIO_write(&PINB, PB0, 1);
-        }
-        else 
-             GPIO_write(&PINB, PB0, 0;
-        SEG_toggle_clk();
-    }
-
-    GPIO_write(&PIND, PD4, 1);
-    _delay_ms(1/1000);
-    GPIO_write(&PIND, PD4, 0);
+    GPIO_write(&PORTD, SEGMENT_LATCH, 1);
+    _delay_us(1);
+    GPIO_write(&PORTD, SEGMENT_LATCH, 0);
 }
-
 /*--------------------------------------------------------------------*/
 void SEG_toggle_clk(void)
 {
-    _delay_ms(2/1000);
-    GPIO_toggle(&PIND, PD7)
+    _delay_us(1);
+    GPIO_write(&PORTD, SEGMENT_CLK, 1);
+    _delay_us(1);
+    GPIO_write(&PORTD, SEGMENT_CLK, 0);
 
 }

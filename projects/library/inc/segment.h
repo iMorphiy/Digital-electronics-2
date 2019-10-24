@@ -61,8 +61,7 @@
  *  @param xxx - Xxxx
  *  @retval None
  */
-void SEG_putc(uint8_t digit,
-              uint8_t position);
+void SEG_putc(uint8_t digit, uint8_t position);
 
 /**
  *  @brief Xxx.
