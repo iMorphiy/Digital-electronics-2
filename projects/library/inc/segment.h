@@ -54,6 +54,10 @@
 #define SEGMENT_CLK     PD7
 #define SEGMENT_LATCH   PD4
 
+#define SEGMENT_POS1   PB3
+#define SEGMENT_POS2   PB4
+#define SEGMENT_POS3   PB2
+#define SEGMENT_POS4   PD2
 /* Function prototypes -----------------------------------------------*/
 /**
  *  @brief Xxx.
@@ -63,10 +67,9 @@
  */
 void SEG_putc(uint8_t digit, uint8_t position);
 
-/**
- *  @brief Xxx.
- *  @retval None
- */
+void SEG_printc(uint8_t digit, uint8_t position);
+ 
 void SEG_toggle_clk(void);
+void four_dig_print(uint16_t digit);
 
 #endif /* SEGMENT_H_INCLUDED */

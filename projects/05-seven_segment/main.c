@@ -19,6 +19,7 @@
 #include "gpio.h"
 #include "timer.h"
 #include "segment.h"
+
 #include <avr/interrupt.h>
 
 /* Typedef -----------------------------------------------------------*/
@@ -53,6 +54,10 @@ int main(void)
     GPIO_config_output(&DDRB, SEGMENT_DATA);
     GPIO_config_output(&DDRD, SEGMENT_CLK);
     GPIO_config_output(&DDRD, SEGMENT_LATCH);
+    GPIO_config_output(&DDRB, SEGMENT_POS1);
+    GPIO_config_output(&DDRB, SEGMENT_POS2);
+    GPIO_config_output(&DDRB, SEGMENT_POS3);
+    GPIO_config_output(&DDRD, SEGMENT_POS4);
 
     GPIO_config_input_nopull(&DDRC, BTN_S1);
     GPIO_config_input_nopull(&DDRC, BTN_S2);
@@ -61,6 +66,10 @@ int main(void)
     GPIO_write(&PORTB, SEGMENT_DATA, 0);
     GPIO_write(&PORTD, SEGMENT_CLK, 0);
     GPIO_write(&PORTD, SEGMENT_LATCH, 0);
+    GPIO_write(&PORTB, SEGMENT_POS1, 0);
+    GPIO_write(&PORTB, SEGMENT_POS2, 0);
+    GPIO_write(&PORTB, SEGMENT_POS3, 0);
+    GPIO_write(&PORTD, SEGMENT_POS4, 0);
     // TODO: Configure 7-segment display pins
     //TIM_config_prescaler(TIM1, TIM_PRESC_64);
     //TIM_config_interrupt(TIM1, TIM_OVERFLOW_ENABLE);
@@ -71,10 +80,20 @@ int main(void)
     for (;;) {
 
      
-       for(uint8_t a=0; a<=9; a++){
-           SEG_putc(a, 0);
-           _delay_ms(200);
-       }
+       
+           
+        //SEG_printc(5, 4);
+           
+         for (uint16_t i = 0; i < 9999; ++i)
+         {
+             _delay_ms(10);
+             four_dig_print (i); 
+         }
+         //SEG_printc(1, 1);
+         //SEG_printc(2, 2);
+         //SEG_printc(3, 3);
+         //SEG_printc(1, 4);
+    
 
     }
 
