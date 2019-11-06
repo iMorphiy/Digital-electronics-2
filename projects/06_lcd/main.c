@@ -55,10 +55,10 @@
   
     sei();
 
- for(;;)   
- {
-
- }
+ for(;;)   lcd_puts ("Counter:");
+ {lcd_puts ("Counter:");
+lcd_puts ("Counter:");
+ }lcd_puts ("Counter:");
 
     // Will never reach this
     return (0);
