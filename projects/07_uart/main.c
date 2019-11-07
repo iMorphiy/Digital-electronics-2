@@ -46,9 +46,67 @@ int main(void)
     sei();
 
     // Display string without auto linefeed
-    lcd_puts("LCD testing");
+    
     // Put string to ringbuffer for transmitting via UART.
     //uart_puts("UART testing\r\n");
+  
+uint8_t customChar1[] = {
+  0x01,
+  0x02,
+  0x06,
+  0x0C,
+  0x1F,
+  0x06,
+  0x04,
+  0x08,
+  0x0E,
+  0x1F,
+  0x11,
+  0x11,
+  0x11,
+  0x11,
+  0x11,
+  0x1F,
+
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  
+  0x14,
+  0x14,
+  0x14,
+  0x14,
+  0x14,
+  0x14,
+  0x14,
+  0x14, 
+
+  0x15,
+  0x15,
+  0x15,
+  0x15,
+  0x15,
+  0x15,
+  0x15,
+  0x15,
+
+
+};
+lcd_command(1<<LCD_CGRAM);
+for (uint8_t j=0; j<40; j++)
+lcd_data(customChar1 [j]);
+lcd_clrscr ();
+lcd_putc (0x00);
+lcd_putc (0x01);
+lcd_putc (0x02);
+lcd_putc (0x03);
+lcd_putc (0x04);
+
 
     /* ADC
      * TODO: Configure ADC reference, clock source, enable ADC module, 
@@ -60,11 +118,17 @@ int main(void)
     ADCSRA = ADCSRA |  _BV(ADPS0) |  _BV(ADPS1) |  _BV(ADPS2);
     ADMUX = ADMUX |  _BV(REFS0);
 
-    TIM_config_prescaler(TIM1, TIM_PRESC_64);
+    TIM_config_prescaler(TIM1, TIM_PRESC_8);
     TIM_config_interrupt(TIM1, TIM_OVERFLOW_ENABLE);
 
     // Infinite loop
     for (;;) {
+
+       for (uint8_t p=0; p<40; p++){
+
+          lcd_putc (0x00);
+          lcd_putc (0x01);
+       }
         
     }
 

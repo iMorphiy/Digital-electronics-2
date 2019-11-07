@@ -21,7 +21,7 @@
 #include <stdlib.h>             // itoa() function
 #include "timer.h"
 #include "lcd.h"
-#include <util/delay.h>
+
 
 /* Typedef -----------------------------------------------------------*/
 /* Define ------------------------------------------------------------*/
@@ -34,31 +34,33 @@
  *  Input:  None
  *  Return: None
  */
- char char_hex[] = "";
- char char_bin[] = "";
- char char_dec[] = "";
-    uint8_t i =0;
- int main(void)
 
+volatile uint8_t i =0;
+
+int main(void)
 {
     lcd_init(LCD_DISP_ON);
 
     TIM_config_prescaler(TIM1, TIM_PRESC_64);
     TIM_config_interrupt(TIM1, TIM_OVERFLOW_ENABLE);
-    
-    lcd_puts ("Counter:");
+
+/* Counter=>-DEC:-------------------------------*/
+/* $---------0b---------------------------------*/
+
+    lcd_puts ("Counter=>");
     lcd_gotoxy (9 , 0);  
+    lcd_puts ("DEC:");
     lcd_gotoxy (0 , 1);
     lcd_puts ("$");
     lcd_gotoxy (6, 1);
     lcd_puts ("0b");
-  
+
     sei();
 
- for(;;)   lcd_puts ("Counter:");
- {lcd_puts ("Counter:");
-lcd_puts ("Counter:");
- }lcd_puts ("Counter:");
+ for(;;) 
+ {
+
+ }  
 
     // Will never reach this
     return (0);
@@ -67,12 +69,16 @@ lcd_puts ("Counter:");
 
 ISR(TIMER1_OVF_vect)
 {   
+
+    char char_hex[3];
+    char char_bin[9];
+    char char_dec[4];
     i++;
-    lcd_gotoxy (9 , 0);
+    lcd_gotoxy (13 , 0);
     lcd_puts(itoa(i, char_dec, 10));
-    lcd_gotoxy (0 , 1);
+    lcd_gotoxy (1 , 1);
     lcd_puts(itoa(i, char_hex, 16));
-    lcd_gotoxy (6, 1);
-    lcd_puts (itoa(i, char_hex, 2));
-     
+    lcd_gotoxy (8, 1);
+    lcd_puts (itoa(i, char_bin, 2));
+  
 }
