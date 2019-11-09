@@ -21,6 +21,7 @@ SRCS += $(LIBRARY_DIR)/src/lcd.c
 #SRCS += $(LIBRARY_DIR)/src/twi.c
 #SRCS += $(LIBRARY_DIR)/src/gpio.c
 SRCS += $(LIBRARY_DIR)/src/timer.c
+SRCS += $(LIBRARY_DIR)/src/custom_lib.c
 #SRCS += $(LIBRARY_DIR)/src/segment.c
 ASSRC := $(wildcard *.S)
 
