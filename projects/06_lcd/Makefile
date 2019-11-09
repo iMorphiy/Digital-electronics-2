@@ -86,10 +86,10 @@ size : $(TARGET).elf
 	@$(SIZE) --format=avr --mcu=$(MCU) --radix=16 $<
 
 ## Rule for program flashing
-# https://www.nongnu.org/avrdude/user-manual/avrdude_4.html
+# https://www.nongnu.org/avrdude/user-manual/avrdude_4.html /dev/ttyACM0 or $(USBPORT)
 flash : $(TARGET).hex
 	@echo "Flashing program memory\t$<"
-	@$(AVRDUDE) -p $(MCU_DUDE) -c arduino -D -V -u -q -U flash:w:$(TARGET).hex:i -P $(USBPORT)
+	@$(AVRDUDE) -p $(MCU_DUDE) -c arduino -D -V -u -q -U flash:w:$(TARGET).hex:i -P /dev/ttyACM0
 
 ## Clean rule
 clean :

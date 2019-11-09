@@ -121,14 +121,21 @@ lcd_putc (0x04);
     TIM_config_prescaler(TIM1, TIM_PRESC_8);
     TIM_config_interrupt(TIM1, TIM_OVERFLOW_ENABLE);
 
-    // Infinite loop
+   lcd_putc (0x02);
+   lcd_putc (0x03);
+   lcd_putc (0x04);
+
+
+
     for (;;) {
 
-       for (uint8_t p=0; p<40; p++){
+      //  for (uint8_t p=0; p<40; p++){
 
-          lcd_putc (0x00);
-          lcd_putc (0x01);
-       }
+      //     lcd_putc (0x00);
+      //     lcd_putc (0x02);
+
+
+      //  }
         
     }
 
