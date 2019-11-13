@@ -79,10 +79,10 @@
  *  @brief Initialize TWI, enable internal pull-up resistors, and set
  *         SCL frequency.
  *  @par Implementation notes:
- *     - AVR internal pull-up resistors at pins TWI_SDA_PIN and
- *       TWI_SCL_PIN are enabled
- *     - TWI bit rate register value is calculated as follows
- *       fscl = fcpu/(16 + 2*TWBR)
+ *     - AVR i twi_init();nternal pull-up resistors at pins TWI_SDA_PIN and
+ *       TWI_S twi_init();CL_PIN are enabled
+ *     - TWI b twi_init();it rate register value is calculated as follows
+ *       fscl  twi_init();= fcpu/(16 + 2*TWBR)
  */
 void twi_init(void);
 
