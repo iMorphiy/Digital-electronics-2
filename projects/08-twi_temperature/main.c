@@ -60,7 +60,7 @@ int main(void)
     sei();
 
     // Put strings to ringbuffer for transmitting via UART.
-    uart_puts("\r\n---TWI scanner---");
+    //uart_puts("\r\n---TWI scanner---");
     //uart_puts("\r\n     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f");
 
     // Infinite loop
@@ -79,39 +79,108 @@ ISR(TIMER1_OVF_vect)
 {
    // fsm_twi_scanner();
     
-    // uint8_t intp;
-    // uint8_t fractp;
-    // char int_part[3];
-    // char fract_part[3];
-    // uint8_t addr = 104; 
-    //uint8_t status;  
+    // uint8_t h_int=0;
+    // uint8_t h_fract=0;
+    // uint8_t t_int=0;
+    // uint8_t t_fract=0;
+
+    uint8_t seconds=0;
+   // uint8_t minutes=0;
+    uint8_t hours=0;
+    uint8_t sec=0;
     
-    
-    // twi_start((addr<<1) + TWI_WRITE);
+    // char H_int[3];
+    // char H_fract[3];
+    // char T_int[3];
+    // char T_fract[3];
 
-    // twi_write((addr<<1) + TWI_TWI_WRITE +(2<<1) + TWI_TWI_WRITE);
-    // twi_write();
+    char RTC_seconds[3];
+    char RTC_minutes[3];
+    char RTC_hours[3];
+   
+    //uint8_t ht_addr = 0x5c; 
+    uint8_t rtc_addr = 0x68; 
+    uint8_t response;
+    uint8_t shift=0;
+    uint8_t shift1=0;
 
-    // intp = twi_read_ack(addr + TWI_TWI_READ);
-    // fractp = twi_read_ack(TWI_TWI_READ);
-    // fractp1 = twi_read_nack(TWI_TWI_READ);
-    // itoa(intp, int_part, 10);
-    // uart_puts(int_part);
-    // itoa(fractp, fract_part, 10);
-    // uart_puts(fract_part);
-
-
-    // uart_puts(".");
-    // twi_write((3) + TWI_READ);
-    // fractp = twi_read_ack();
-    // itoa(fractp, fract_part, 10);
-    // uart_puts(fract_part);
-
-
-    // uart_puts("\r\n");
-    // twi_stop();
 
     
+    uint8_t bitmasc = 0b01110000;
+    uint8_t bitmasc2= 0b00001111;
+   
+
+    // response = twi_start((ht_addr<<1) + TWI_WRITE);
+        
+    //     if(response == 0)
+    //     {
+    //         twi_writbitmasce(0x00);
+    //     }bitmasc
+    //     twi_stop();bitmasc
+
+    //     response = tbitmascwi_start((ht_addr<<1) + TWI_READ);
+    //     if(response bitmasc== 0)
+    //     {
+    //         h_int =     twi_read_ack();
+    //         h_fract =   twi_read_ack();
+    //         t_int =     twi_read_ack();
+    //         t_fract =   twi_read_nack();
+    //     }    
+    //     twi_stop();
+    
+    response = twi_start((rtc_addr<<1) + TWI_WRITE);
+        
+        if(response == 0){
+
+           twi_write(0x00);
+        }
+        twi_stop();
+
+    response = twi_start((rtc_addr<<1) + TWI_READ);
+       
+        if(response == 0)
+        {
+            seconds = twi_read_ack();
+
+        shift = seconds&bitmasc;
+        shift =(shift>>4);
+        shift1=seconds&bitmasc2;
+        sec=(10*shift)+shift1;
+
+           // minutes = twi_read_ack();          
+            hours =   twi_read_nack();
+        }    
+        twi_stop();
+
+    itoa(sec, RTC_seconds, 10);
+    itoa(sec, RTC_minutes, 10);
+    itoa(hours, RTC_hours, 10);
+     
+     
+    // itoa(h_int, H_int, 10);
+    // itoa(h_fract, H_fract, 10);
+    // itoa(t_int, T_int, 10);
+    // itoa(t_fract, T_fract, 10);
+     
+    //uart_puts(RTC_hours);
+    //uart_puts(":"); 
+    //uart_puts(RTC_minutes);
+    
+    uart_puts(RTC_seconds);
+    uart_puts("\r\n"); 
+
+
+
+    //  uart_puts("HUM: "); 
+    //  uart_puts(H_int);
+    //  uart_puts("."); 
+    //  uart_puts(H_fract);
+    //  uart_puts("   TEMP: "); 
+    //  uart_puts(T_int);
+    //  uart_puts("."); 
+    //  uart_puts(T_fract);
+    //  uart_puts("\r\n"); 
+      
 
 }
 
