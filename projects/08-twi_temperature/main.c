@@ -20,6 +20,7 @@
 #include "twi.h"
 
 
+
 /* Typedef -----------------------------------------------------------*/
 typedef enum {
     IDLE_STATE = 1,
