@@ -19,7 +19,7 @@
 /* Typedef -----------------------------------------------------------*/
 /* Define ------------------------------------------------------------*/
 #define LED_PIN     PB5
-#define BLINK_DELAY 25
+#define BLINK_DELAY 1
 /* Variables ---------------------------------------------------------*/
 /* Function prototypes -----------------------------------------------*/
 
@@ -40,9 +40,9 @@ int main(void)
     /* Infinite loop */
     for (;;)
     {
-        /* Invert LED and delay */
-        PORTB ^= _BV(LED_PIN);      /* PORTB = PORTB xor (0010 0000) */
-        _delay_ms(BLINK_DELAY);     /* Wait for several milisecs */
+        PORTB |= _BV(LED_PIN); 
+        PORTB &= ~_BV(LED_PIN);
+        
     }
 
     return (0);
