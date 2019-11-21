@@ -79,3 +79,6 @@ rand8_asm:
     pop temp                ; Restore values from Stack end return
     pop result
     ret
+
+
+
