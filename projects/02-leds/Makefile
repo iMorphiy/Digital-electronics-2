@@ -17,8 +17,11 @@ LIBRARY_DIR = ../library
 SRCS := $(wildcard *.c)
 # Add or comment libraries you are using in the project
 #SRCS += $(LIBRARY_DIR)/src/lcd.c
-#SRCS += $(LIBRARY_DIR)/src/uart.c
+SRCS += $(LIBRARY_DIR)/src/uart.c
 #SRCS += $(LIBRARY_DIR)/src/twi.c
+SRCS += $(LIBRARY_DIR)/src/hc_sr04.c
+SRCS += $(LIBRARY_DIR)/src/timer.c
+SRCS += $(LIBRARY_DIR)/src/gpio.c
 ASSRC := $(wildcard *.S)
 
 
@@ -86,7 +89,7 @@ size : $(TARGET).elf
 # https://www.nongnu.org/avrdude/user-manual/avrdude_4.html
 flash : $(TARGET).hex
 	@echo "Flashing program memory\t$<"
-	@$(AVRDUDE) -p $(MCU_DUDE) -c arduino -D -V -u -q -U flash:w:$(TARGET).hex:i -P $(USBPORT)
+	@$(AVRDUDE) -p $(MCU_DUDE) -c arduino -D -V -u -q -U flash:w:$(TARGET).hex:i -P /dev/ttyACM0
 
 ## Clean rule
 clean :
