@@ -20,6 +20,7 @@
 #include "timer.h"
 #include "segment.h"
 
+
 #include <avr/interrupt.h>
 
 /* Typedef -----------------------------------------------------------*/
@@ -80,19 +81,23 @@ int main(void)
     for (;;) {
 
      
-       
-           
-        //SEG_printc(5, 4);
-           
-         for (uint16_t i = 0; i < 9999; ++i)
-         {
-             _delay_ms(10);
-             four_dig_print (i); 
-         }
-         //SEG_printc(1, 1);
+       double floating = 3.40;
+       double dec;
+       double fractional = modf(floating, &dec);
+         fractional = fractional/0.1;  
+        float t = 0.5;
+        
+
+     
+
+        //SEG_printc(dec, 3);
+        //SEG_printc(fractional, 4);
+        four_dig_print(123.4);
+         //SEG_printc(1, 3, 1);
          //SEG_printc(2, 2);
          //SEG_printc(3, 3);
          //SEG_printc(1, 4);
+         // SEG_printc(1, 4);
     
 
     }

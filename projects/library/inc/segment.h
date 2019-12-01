@@ -65,11 +65,11 @@
  *  @param xxx - Xxxx
  *  @retval None
  */
-void SEG_putc(uint8_t digit, uint8_t position);
+void SEG_putc(uint8_t digit, uint8_t position, uint8_t dp);
 
-void SEG_printc(uint8_t digit, uint8_t position);
+void SEG_printc(uint8_t digit, uint8_t position, uint8_t dp);
  
 void SEG_toggle_clk(void);
-void four_dig_print(uint16_t digit);
+void four_dig_print(double digits);
 
 #endif /* SEGMENT_H_INCLUDED */

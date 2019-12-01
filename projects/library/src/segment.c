@@ -33,6 +33,7 @@
 #include <util/delay.h>
 #include "gpio.h"
 #include "segment.h"
+#include <math.h>
 
 /* Define ------------------------------------------------------------*/
 /* Variables ---------------------------------------------------------*/
@@ -56,14 +57,21 @@ uint8_t segment_position[] = {
     0b00000100,   // Position 1
     0b00000010,   // Position 2
     0b00000001};  // Position 3
-
+uint8_t DP = 0b01111111;
 /* Functions ---------------------------------------------------------*/
-void SEG_putc(uint8_t digit, uint8_t position)
+void SEG_putc(uint8_t digit, uint8_t position, uint8_t dp)
 {
 
     uint8_t i;
     /* Read values from look-up tables */
-    digit    = segment_digit[digit];
+    if(DP==1){
+    digit  = segment_digit[digit]&DP;
+    }
+    else
+    {
+       digit  = segment_digit[digit];
+    }
+    
     position = segment_position[position];
    /*To display digit put 1st byte to serial data */
     for (i = 0; i < 8; i++) {
@@ -89,12 +97,18 @@ void SEG_toggle_clk(void)
     GPIO_write(&PORTD, SEGMENT_CLK, 0);
 
 }
-void SEG_printc(uint8_t digit, uint8_t position)
+void SEG_printc(uint8_t digit, uint8_t position, uint8_t dp)
 {
 
     uint8_t i;
     /* Read values from look-up tables */
-    digit    = segment_digit[digit];
+    if(dp==1){
+    digit  = segment_digit[digit]&DP;
+    }
+    else
+    {
+       digit  = segment_digit[digit];
+    }
    /*To display digit put 1st byte to serial data */
     for (i = 0; i < 8; i++) {
         GPIO_write(&PORTB, SEGMENT_DATA, bit_is_set(digit, 7-i));
@@ -161,14 +175,20 @@ void SEG_printc(uint8_t digit, uint8_t position)
                
         }
 }
-void four_dig_print(uint16_t digit){
+void four_dig_print(double digits){
 
-    uint8_t numb1= digit/1000;
-    SEG_printc(numb1, 4);
-    uint8_t numb2= (digit%1000)/100;
-    SEG_printc(numb2, 3);
-    uint8_t numb3= (digit%100)/10;
-    SEG_printc(numb3, 2);
+    uint16_t digit;
+    double dec;
+    double fractional = modf(digits, &dec);
+    fractional = fractional/0.1;  
+    // float t = 0.5;
+    digit = (int)dec;
+    uint16_t numb1= digit/100;
+    SEG_printc(numb1, 1, 0);
+    uint16_t numb2= (digit%100)/10;
+    SEG_printc(numb2, 2, 0);
+    uint16_t numb3= (digit%10);
+    SEG_printc(numb3, 3, 1);
     uint8_t numb4= (digit%10);
-    SEG_printc(numb4, 1);
+    SEG_printc(fractional, 4, 0);
 }
