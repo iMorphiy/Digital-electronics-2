@@ -17,15 +17,14 @@ LIBRARY_DIR = ../library
 SRCS := $(wildcard *.c)
 # Add or comment libraries you are using in the project
 #SRCS += $(LIBRARY_DIR)/src/lcd.c
-#SRCS += $(LIBRARY_DIR)/src/uart.c
+SRCS += $(LIBRARY_DIR)/src/uart.c
 #SRCS += $(LIBRARY_DIR)/src/twi.c
-SRCS += $(LIBRARY_DIR)/src/gpio.c
+#SRCS += $(LIBRARY_DIR)/src/hc_sr04.c
 SRCS += $(LIBRARY_DIR)/src/timer.c
-SRCS += $(LIBRARY_DIR)/src/segment.c
-
+SRCS += $(LIBRARY_DIR)/src/gpio.c
 ASSRC := $(wildcard *.S)
 
-https://github.com/iMorphiy/Digital
+
 
 ##
 ## You should not have to change anything below here
@@ -88,18 +87,11 @@ size : $(TARGET).elf
 
 ## Rule for program flashing
 # https://www.nongnu.org/avrdude/user-manual/avrdude_4.html
-## Varible USBPORT  $(USBPORT) may link to another port on Ubuntu LTS 
 flash : $(TARGET).hex
 	@echo "Flashing program memory\t$<"
 	@$(AVRDUDE) -p $(MCU_DUDE) -c arduino -D -V -u -q -U flash:w:$(TARGET).hex:i -P $(USBPORT)
 
 ## Clean rule
-
 clean :
 	@echo "Cleaning project files \t$(RMFILES)"
 	@$(RM) $(RMFILES)
-
-print :
-
-	echo "AVRDUDE is: $(AVRDUDE)\n TARGET is: $(TARGET)\n USBPORT is: $(USBPORT)\n MCU_DUDE is: $(MCU_DUDE)\n"
-

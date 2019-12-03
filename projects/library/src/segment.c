@@ -49,7 +49,7 @@ uint8_t segment_digit[] = {
     0b10000010,      // Digit 6
     0b11111000,      // Digit 7
     0b10000000,      // Digit 8
-    0b10011000};     // Digit 9
+    0b10010000};     // Digit 9
 
 // Active high position 0 to 3 
 uint8_t segment_position[] = {
@@ -64,7 +64,7 @@ void SEG_putc(uint8_t digit, uint8_t position, uint8_t dp)
 
     uint8_t i;
     /* Read values from look-up tables */
-    if(DP==1){
+    if(dp==1){
     digit  = segment_digit[digit]&DP;
     }
     else
@@ -97,84 +97,7 @@ void SEG_toggle_clk(void)
     GPIO_write(&PORTD, SEGMENT_CLK, 0);
 
 }
-void SEG_printc(uint8_t digit, uint8_t position, uint8_t dp)
-{
-
-    uint8_t i;
-    /* Read values from look-up tables */
-    if(dp==1){
-    digit  = segment_digit[digit]&DP;
-    }
-    else
-    {
-       digit  = segment_digit[digit];
-    }
-   /*To display digit put 1st byte to serial data */
-    for (i = 0; i < 8; i++) {
-        GPIO_write(&PORTB, SEGMENT_DATA, bit_is_set(digit, 7-i));
-        SEG_toggle_clk();
-    }
-    
-    switch (position) {
-            case 1:
-                /* Value on position 1 */
-            
-               GPIO_write(&PORTB, SEGMENT_POS1, 1);
-                break;
-                
-            case 2:
-                /* Value on position 2 */
-                GPIO_write(&PORTB, SEGMENT_POS2, 1);
-                break;
-            case 3:
-                /* Value on position 3 */
-                GPIO_write(&PORTB, SEGMENT_POS3, 1);
-                break;
-            case 4:
-                /* Value on position 4 */
-             GPIO_write(&PORTD, SEGMENT_POS4, 1);
-                break;
-            
-            default:
-                GPIO_write(&PORTB, SEGMENT_POS1, 0);
-                GPIO_write(&PORTB, SEGMENT_POS2, 0);
-                GPIO_write(&PORTB, SEGMENT_POS3, 0);
-                GPIO_write(&PORTD, SEGMENT_POS4, 0);
-               
-        }
-    
-    GPIO_write(&PORTD, SEGMENT_LATCH, 1);
-    _delay_us(1);
-    GPIO_write(&PORTD, SEGMENT_LATCH, 0);
-    _delay_ms(1);
-    switch (position) {
-            case 1:
-                /* Value on position 1 */
-            _delay_us(10);
-               GPIO_write(&PORTB, SEGMENT_POS1, 0);
-                break;
-                _delay_us(10);
-            case 2:
-                /* Value on position 2 */
-                GPIO_write(&PORTB, SEGMENT_POS2, 0);
-                break;
-            case 3:
-                /* Value on position 3 */
-                GPIO_write(&PORTB, SEGMENT_POS3, 0);
-                break;
-            case 4:
-                /* Value on position 4 */
-             GPIO_write(&PORTD, SEGMENT_POS4, 0);
-                break;
-            
-            default:
-                GPIO_write(&PORTB, SEGMENT_POS1, 0);
-                GPIO_write(&PORTB, SEGMENT_POS2, 0);
-                GPIO_write(&PORTB, SEGMENT_POS3, 0);
-                GPIO_write(&PORTD, SEGMENT_POS4, 0);
-               
-        }
-}
+/*--------------------------------------------------------------------*/
 void four_dig_print(double digits){
 
     uint16_t digit;
@@ -184,11 +107,13 @@ void four_dig_print(double digits){
     // float t = 0.5;
     digit = (int)dec;
     uint16_t numb1= digit/100;
-    SEG_printc(numb1, 1, 0);
+    if(numb1!=0)
+    SEG_putc(numb1, 3, 0);
     uint16_t numb2= (digit%100)/10;
-    SEG_printc(numb2, 2, 0);
+    if(numb2!=0)
+    SEG_putc(numb2, 2, 0);
     uint16_t numb3= (digit%10);
-    SEG_printc(numb3, 3, 1);
+    SEG_putc(numb3, 1, 1);
     uint8_t numb4= (digit%10);
-    SEG_printc(fractional, 4, 0);
+    SEG_putc(fractional, 0, 0);
 }

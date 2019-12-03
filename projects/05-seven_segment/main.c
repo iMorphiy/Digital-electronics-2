@@ -14,98 +14,42 @@
  */
 
 /* Includes ----------------------------------------------------------*/
-#include <avr/io.h>
+
 #include <util/delay.h>
 #include "gpio.h"
 #include "timer.h"
 #include "segment.h"
 
 
-#include <avr/interrupt.h>
 
-/* Typedef -----------------------------------------------------------*/
-/* Define ------------------------------------------------------------*/
-#define LED_D1          PB5
-#define BTN_S1          PC1 // PCINT 9
-#define BTN_S2          PC2 // PCINT 10
-#define BTN_S3          PC3 // PCINT 11
-
-/* Variables ---------------------------------------------------------*/
-/* Function prototypes -----------------------------------------------*/
-
-/* Functions ---------------------------------------------------------*/
-/**
- *  Brief:  Main program. Shows decimal values ​​on 7-segment display.
- *  Input:  None
- *  Return: None
- */
 int main(void)
 {
-    /* D1 led */
-    // TODO: Configure D1 led at Multi-Function Shield
-    GPIO_config_output(&DDRB, LED_D1);
-    //GPIO_write(&PINB, LED_D1, 1);
-    // TODO: Configure Pin Change Interrupts 11, 10, and 9
-
-    PCICR |= _BV(PCIE1);
-    PCMSK1 |= _BV(PCINT9); 
-    //|_BV(PCINT10) |_BV(PCINT11);
-    /* 7-segment display interface */
-
     GPIO_config_output(&DDRB, SEGMENT_DATA);
     GPIO_config_output(&DDRD, SEGMENT_CLK);
     GPIO_config_output(&DDRD, SEGMENT_LATCH);
-    GPIO_config_output(&DDRB, SEGMENT_POS1);
-    GPIO_config_output(&DDRB, SEGMENT_POS2);
-    GPIO_config_output(&DDRB, SEGMENT_POS3);
-    GPIO_config_output(&DDRD, SEGMENT_POS4);
+    GPIO_config_output(&DDRD, PD4);
 
-    GPIO_config_input_nopull(&DDRC, BTN_S1);
-    GPIO_config_input_nopull(&DDRC, BTN_S2);
-    GPIO_config_input_nopull(&DDRC, BTN_S3);
+    DDRB |= _BV(SEGMENT_DATA);
+    PORTB &= ~_BV(SEGMENT_DATA);
+    DDRB |= _BV(SEGMENT_CLK);
+    PORTB &= ~_BV(SEGMENT_CLK);
+    DDRB |= _BV(SEGMENT_DATA);
+    PORTB &= ~_BV(SEGMENT_DATA);
 
     GPIO_write(&PORTB, SEGMENT_DATA, 0);
     GPIO_write(&PORTD, SEGMENT_CLK, 0);
     GPIO_write(&PORTD, SEGMENT_LATCH, 0);
-    GPIO_write(&PORTB, SEGMENT_POS1, 0);
-    GPIO_write(&PORTB, SEGMENT_POS2, 0);
-    GPIO_write(&PORTB, SEGMENT_POS3, 0);
-    GPIO_write(&PORTD, SEGMENT_POS4, 0);
-    // TODO: Configure 7-segment display pins
-    //TIM_config_prescaler(TIM1, TIM_PRESC_64);
-    //TIM_config_interrupt(TIM1, TIM_OVERFLOW_ENABLE);
-    /* Enable interrupts by setting the global interrupt mask */
-    sei();
 
-    /* Infinite loop */
     for (;;) {
-
-     
-       double floating = 3.40;
-       double dec;
-       double fractional = modf(floating, &dec);
-         fractional = fractional/0.1;  
-        float t = 0.5;
-        
-
-     
-
-        //SEG_printc(dec, 3);
-        //SEG_printc(fractional, 4);
-        four_dig_print(123.4);
-         //SEG_printc(1, 3, 1);
-         //SEG_printc(2, 2);
-         //SEG_printc(3, 3);
-         //SEG_printc(1, 4);
-         // SEG_printc(1, 4);
+    double floating = 3.40;
+    double dec;
+    double fractional = modf(floating, &dec);
+    fractional = fractional/0.1;  
+    float t = 0.5;
     
-
+    four_dig_print(84.7);  
     }
 
     return (0);
 }
 
-ISR(PCINT1_vect)
-{   
-    GPIO_toggle(&PORTB, LED_D1);
-}

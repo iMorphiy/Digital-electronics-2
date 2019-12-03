@@ -21,7 +21,6 @@
  *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -46,29 +45,14 @@
  */
 
 /* Includes ----------------------------------------------------------*/
-#include <avr/io.h>
 
 /* Define ------------------------------------------------------------*/
 /** @brief Defines the interface of 7-segment display. */
-#define SEGMENT_DATA    PB0
+#define SEGMENT_DATA    PB2
 #define SEGMENT_CLK     PD7
 #define SEGMENT_LATCH   PD4
 
-#define SEGMENT_POS1   PB3
-#define SEGMENT_POS2   PB4
-#define SEGMENT_POS3   PB2
-#define SEGMENT_POS4   PD2
-/* Function prototypes -----------------------------------------------*/
-/**
- *  @brief Xxx.
- *  @param xxx - Xxxx
- *  @param xxx - Xxxx
- *  @retval None
- */
 void SEG_putc(uint8_t digit, uint8_t position, uint8_t dp);
-
-void SEG_printc(uint8_t digit, uint8_t position, uint8_t dp);
- 
 void SEG_toggle_clk(void);
 void four_dig_print(double digits);
 
